@@ -16,7 +16,7 @@ var coelho, coelho_triste, coelho_comendo, coelho_feliz, fruta;
 var imagem_fundo;
 var botao_cortar, botao_mudo;
 var som_fundo, som_comendo, som_triste, som_ar;
-
+var soprador 
 function preload(){
   imagem_fundo = loadImage("images/background.png");
   fruta = loadImage("images/melon.png");
@@ -49,7 +49,7 @@ function setup()
   coelho_comendo.frameDelay = 20;
   coelho_triste.frameDelay = 20;
 
-  coelho = createSprite(200,620,100,100);
+  coelho = createSprite(400,620,100,100);
   coelho.scale = 0.2;
   //coelho.addImage(coelho_1);
   coelho.addAnimation("feliz", coelho_feliz);
@@ -66,6 +66,11 @@ function setup()
   botao_mudo.size(80,80);
   botao_mudo.mouseClicked(mute); //função callback
 
+  soprador = createImg("images/balloon.png")
+  soprador.position(180,300);
+  soprador.size(80,80);
+  soprador.mouseClicked(cair); //função callback
+  
 
   rope = new Rope(7,{x:245,y:30});
   fruit = Bodies.circle(300,300,20);
@@ -96,10 +101,14 @@ function draw()
   //chamada da função colidir
   if(colidir(fruit,coelho) == true){
     coelho.changeAnimation("comendo");
+    som_comendo.play();
   }
 
   drawSprites();
- 
+  if(colidir(fruit,ground.body) == true){
+    coelho.changeAnimation("triste");
+    som_triste.play();
+  }
    
 }
 
