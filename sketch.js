@@ -10,11 +10,11 @@ const Composite = Matter.Composite;
 var engine;
 var world;
 var ground;
-var fruit,rope;
-var fruit_con;
+var fruit,rope,corda2,corda03;
+var fruit_con,linkcorda2,linkcorda3;
 var coelho, coelho_triste, coelho_comendo, coelho_feliz, fruta;
 var imagem_fundo;
-var botao_cortar, botao_mudo;
+var botao_cortar, botao_mudo,botao_cortar2,botao_cortar3;
 var som_fundo, som_comendo, som_triste, som_ar;
 var soprador 
 function preload(){
@@ -60,23 +60,34 @@ function setup()
   botao_cortar.position(200,30);
   botao_cortar.size(80,80);
   botao_cortar.mouseClicked(cair); //função callback
-
+  botao_cortar2 = createImg("images/cut_btn.png");
+  botao_cortar2.position(400,125);
+  botao_cortar2.size(80,80);
+  botao_cortar2.mouseClicked(cair2); //função callback
+  botao_cortar3 = createImg("images/cut_btn.png");
+  botao_cortar3.position(80,80);
+  botao_cortar3.size(80,80);
+  botao_cortar3.mouseClicked(cair3); //função callback
   botao_mudo = createImg("images/mute.png");
-  botao_mudo.position(400,30);
+  botao_mudo.position(400,40);
   botao_mudo.size(80,80);
   botao_mudo.mouseClicked(mute); //função callback
 
   soprador = createImg("images/balloon.png")
-  soprador.position(180,300);
+  soprador.position(160,300);
   soprador.size(80,80);
-  soprador.mouseClicked(cair); //função callback
+  soprador.mouseClicked(soprar); //função callback
   
 
   rope = new Rope(7,{x:245,y:30});
+  corda2= new Rope (8,{x:450,y:150})
+  corda03= new Rope (7,{x:110,y:80})
   fruit = Bodies.circle(300,300,20);
   Matter.Composite.add(rope.body,fruit);
 
   fruit_con = new Link(rope,fruit);
+  linkcorda2 = new Link (corda2,fruit);
+  linkcorda3 = new Link (corda03,fruit);
 
   rectMode(CENTER);
   ellipseMode(RADIUS);
@@ -91,6 +102,8 @@ function draw()
   image(imagem_fundo,250,350,500,700);
 
   rope.show();
+  corda2.show();
+  corda03.show();
   if(fruit!= null){
   image(fruta,fruit.position.x,fruit.position.y,70,70);
   }
@@ -116,14 +129,30 @@ function cair(){
   rope.break();
   fruit_con.soltar();
   fruit_con = null;
+  
 }
-
+function cair2(){
+  corda2.break();
+  linkcorda2.soltar();
+  linkcorda2 = null;
+  
+}
+function cair3(){
+  corda03.break();
+  linkcorda3.soltar();
+  linkcorda3 = null;
+  
+}
+function soprar(){
+  Matter.Body.applyForce(fruit,{x:0,y:0},{x:0.05,y:0})
+  som_ar.play();
+}
 function colidir(body,sprite){
   if(body!=null){
     var d = dist(body.position.x, body.position.y, sprite.position.x, sprite.position.y);
     if(d <= 80){
-      World.remove(engine.world,fruta);
-      fruta = null;
+      World.remove(engine.world,fruit);
+      fruit = null;
       return true;
     }
     else{
