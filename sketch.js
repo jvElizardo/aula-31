@@ -36,7 +36,17 @@ function preload(){
 
 function setup() 
 {
-  createCanvas(500,700);
+  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if(isMobile){
+    canW = displayWidth - 50;
+    canH = displayHeight - 50;
+    createCanvas(canW,canH);
+  }
+  else{
+    canW = windowWidth - 50;
+    canH = windowHeight -50;
+    createCanvas(canW,canH);
+  }
   frameRate(80); 
 
   som_fundo.play();
@@ -49,7 +59,7 @@ function setup()
   coelho_comendo.frameDelay = 20;
   coelho_triste.frameDelay = 20;
 
-  coelho = createSprite(400,620,100,100);
+  coelho = createSprite(400,height-100,100,100);
   coelho.scale = 0.2;
   //coelho.addImage(coelho_1);
   coelho.addAnimation("feliz", coelho_feliz);
@@ -99,7 +109,7 @@ function setup()
 function draw() 
 {
   background(51);
-  image(imagem_fundo,250,350,500,700);
+  image(imagem_fundo,width/2,height/2,canW,canH);
 
   rope.show();
   corda2.show();
