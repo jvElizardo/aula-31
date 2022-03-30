@@ -15,8 +15,9 @@ var fruit_con,linkcorda2,linkcorda3;
 var coelho, coelho_triste, coelho_comendo, coelho_feliz, fruta;
 var imagem_fundo;
 var botao_cortar, botao_mudo,botao_cortar2,botao_cortar3;
-var som_fundo, som_comendo, som_triste, som_ar;
-var soprador 
+var som_fundo, som_comendo, som_triste, som_ar, som_corte;
+var soprador;
+
 function preload(){
   imagem_fundo = loadImage("images/background.png");
   fruta = loadImage("images/melon.png");
@@ -28,15 +29,16 @@ function preload(){
   som_comendo = loadSound("images/Cutting Through Foliage.mp3");
   som_triste = loadSound("images/sad2.wav");
   som_ar = loadSound("images/air.wav");
+  som_corte = loadSound("images/rope_cut.mp3");
 
   coelho_feliz.playing = true;
+  coelho_feliz.looping = true;
   coelho_comendo.playing = true;
   coelho_comendo.looping = false;
 }
 
 function setup() 
 {
- 
   var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   if(isMobile){
     canW = displayWidth - 50;
@@ -48,21 +50,20 @@ function setup()
     canH = windowHeight -50;
     createCanvas(canW,canH);
   }
-
-  //createCanvas(600,800);
+  //createCanvas(500,700);
   frameRate(80); 
 
   som_fundo.play();
   som_fundo.setVolume(0.2);
   engine = Engine.create();
   world = engine.world;
-  ground = new Ground(200,height-250,600,20);
+  ground = new Ground(canW/2,canH-50,canW,20);
 
   coelho_feliz.frameDelay = 20;
   coelho_comendo.frameDelay = 20;
   coelho_triste.frameDelay = 20;
 
-  coelho = createSprite(400,height-300,100,100);
+  coelho = createSprite(canW/2,canH-300,100,100);
   coelho.scale = 0.2;
   //coelho.addImage(coelho_1);
   coelho.addAnimation("feliz", coelho_feliz);
@@ -70,32 +71,32 @@ function setup()
   coelho.addAnimation("triste", coelho_triste);
 
   botao_cortar = createImg("images/cut_btn.png");
-  botao_cortar.position(200,30);
+  botao_cortar.position(width/2-250,120);
   botao_cortar.size(80,80);
   botao_cortar.mouseClicked(cair); //função callback
   botao_cortar2 = createImg("images/cut_btn.png");
-  botao_cortar2.position(400,125);
+  botao_cortar2.position(width/2+50,120);
   botao_cortar2.size(80,80);
   botao_cortar2.mouseClicked(cair2); //função callback
   botao_cortar3 = createImg("images/cut_btn.png");
-  botao_cortar3.position(80,80);
+  botao_cortar3.position(width/2+250,200);
   botao_cortar3.size(80,80);
   botao_cortar3.mouseClicked(cair3); //função callback
   botao_mudo = createImg("images/mute.png");
-  botao_mudo.position(400,40);
+  botao_mudo.position(width-200,40);
   botao_mudo.size(80,80);
   botao_mudo.mouseClicked(mute); //função callback
 
   soprador = createImg("images/balloon.png")
-  soprador.position(160,300);
+  soprador.position(canW/3,height/5);
   soprador.size(80,80);
   soprador.mouseClicked(soprar); //função callback
   
 
-  rope = new Rope(7,{x:245,y:30});
-  corda2= new Rope (8,{x:450,y:150})
-  corda03= new Rope (7,{x:110,y:80})
-  fruit = Bodies.circle(300,300,20);
+  rope = new Rope(7,{x:canW/2-215,y:120});
+  corda2= new Rope (8,{x:canW/2+85,y:120})
+  corda03= new Rope (7,{x:canW/2+285,y:235})
+  fruit = Bodies.circle(canW/2,300,20);
   Matter.Composite.add(rope.body,fruit);
 
   fruit_con = new Link(rope,fruit);
@@ -103,7 +104,7 @@ function setup()
   linkcorda3 = new Link (corda03,fruit);
 
   rectMode(CENTER);
-  ellipseMode(RADIUS);
+  //ellipseMode(RADIUS);
   textSize(50);
   imageMode(CENTER);
   
@@ -112,13 +113,13 @@ function setup()
 function draw() 
 {
   background(51);
-  image(imagem_fundo,width/3,height/3,canW-50,canH-50);
+  image(imagem_fundo,width/2,height/2,canW,canH);
 
   rope.show();
   corda2.show();
   corda03.show();
   if(fruit!= null){
-  image(fruta,fruit.position.x,fruit.position.y,70,70);
+  image(fruta,fruit.position.x,fruit.position.y,80,80);
   }
   Engine.update(engine);
   
@@ -131,26 +132,34 @@ function draw()
   }
 
   drawSprites();
-  if(colidir(fruit,ground.body) == true){
+  //if(colidir(fruit,ground.body) == true) ou...
+  if(fruit!=null && fruit.position.y >= canH-100)
+  {
     coelho.changeAnimation("triste");
+    som_fundo.stop();
     som_triste.play();
+    fruit = null;
   }
+  
    
 }
 
 function cair(){
+  som_corte.play();
   rope.break();
   fruit_con.soltar();
   fruit_con = null;
   
 }
 function cair2(){
+  som_corte.play();
   corda2.break();
   linkcorda2.soltar();
   linkcorda2 = null;
   
 }
 function cair3(){
+  som_corte.play();
   corda03.break();
   linkcorda3.soltar();
   linkcorda3 = null;
