@@ -41,13 +41,13 @@ function setup()
 {
   var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   if(isMobile){
-    canW = displayWidth - 50;
-    canH = displayHeight - 50;
+    canW = displayWidth;
+    canH = displayHeight;
     createCanvas(canW,canH);
   }
   else{
-    canW = windowWidth - 50;
-    canH = windowHeight -50;
+    canW = windowWidth;
+    canH = windowHeight;
     createCanvas(canW,canH);
   }
   //createCanvas(500,700);
@@ -57,13 +57,13 @@ function setup()
   som_fundo.setVolume(0.2);
   engine = Engine.create();
   world = engine.world;
-  ground = new Ground(canW/2,canH-50,canW,20);
+  ground = new Ground(200,canH,500,20);
 
   coelho_feliz.frameDelay = 20;
   coelho_comendo.frameDelay = 20;
   coelho_triste.frameDelay = 20;
 
-  coelho = createSprite(canW/2,canH-100,100,100);
+  coelho = createSprite(200,canH-100,100,100);
   coelho.scale = 0.2;
   //coelho.addImage(coelho_1);
   coelho.addAnimation("feliz", coelho_feliz);
@@ -71,32 +71,32 @@ function setup()
   coelho.addAnimation("triste", coelho_triste);
 
   botao_cortar = createImg("images/cut_btn.png");
-  botao_cortar.position(width/2-250,120);
+  botao_cortar.position(50,80);
   botao_cortar.size(80,80);
   botao_cortar.mouseClicked(cair); //função callback
   botao_cortar2 = createImg("images/cut_btn.png");
-  botao_cortar2.position(width/2+50,120);
+  botao_cortar2.position(150,30);
   botao_cortar2.size(80,80);
   botao_cortar2.mouseClicked(cair2); //função callback
   botao_cortar3 = createImg("images/cut_btn.png");
-  botao_cortar3.position(width/2+250,200);
+  botao_cortar3.position(250,120);
   botao_cortar3.size(80,80);
   botao_cortar3.mouseClicked(cair3); //função callback
   botao_mudo = createImg("images/mute.png");
-  botao_mudo.position(width-200,40);
+  botao_mudo.position(500,30);
   botao_mudo.size(80,80);
   botao_mudo.mouseClicked(mute); //função callback
 
   soprador = createImg("images/balloon.png")
-  soprador.position(canW/3,height/2);
+  soprador.position(50,250);
   soprador.size(80,80);
   soprador.mouseClicked(soprar); //função callback
   
 
-  rope = new Rope(9,{x:canW/2-235,y:120});
-  corda2= new Rope (7,{x:canW/2+85,y:120})
-  corda03= new Rope (8,{x:canW/2+285,y:235})
-  fruit = Bodies.circle(canW/2,height/2,20);
+  rope = new Rope(6,{x:80,y:80});
+  corda2= new Rope(6,{x:200,y:30});
+  corda03= new Rope(6,{x:300,y:120});
+  fruit = Bodies.circle(300,250,20);
   Matter.Composite.add(rope.body,fruit);
 
   fruit_con = new Link(rope,fruit);
@@ -104,7 +104,6 @@ function setup()
   linkcorda3 = new Link (corda03,fruit);
 
   rectMode(CENTER);
-  //ellipseMode(RADIUS);
   textSize(50);
   imageMode(CENTER);
   
@@ -113,7 +112,7 @@ function setup()
 function draw() 
 {
   background(51);
-  image(imagem_fundo,width/2,height/2,canW,canH);
+  image(imagem_fundo,canW/2,canH/2,canW,canH);
 
   rope.show();
   corda2.show();
