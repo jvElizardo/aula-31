@@ -63,7 +63,7 @@ function setup()
   coelho_comendo.frameDelay = 20;
   coelho_triste.frameDelay = 20;
 
-  coelho = createSprite(canW/2,canH-300,100,100);
+  coelho = createSprite(canW/2,canH-100,100,100);
   coelho.scale = 0.2;
   //coelho.addImage(coelho_1);
   coelho.addAnimation("feliz", coelho_feliz);
@@ -88,15 +88,15 @@ function setup()
   botao_mudo.mouseClicked(mute); //função callback
 
   soprador = createImg("images/balloon.png")
-  soprador.position(canW/3,height/5);
+  soprador.position(canW/3,height/2);
   soprador.size(80,80);
   soprador.mouseClicked(soprar); //função callback
   
 
-  rope = new Rope(7,{x:canW/2-215,y:120});
-  corda2= new Rope (8,{x:canW/2+85,y:120})
-  corda03= new Rope (7,{x:canW/2+285,y:235})
-  fruit = Bodies.circle(canW/2,300,20);
+  rope = new Rope(9,{x:canW/2-235,y:120});
+  corda2= new Rope (7,{x:canW/2+85,y:120})
+  corda03= new Rope (8,{x:canW/2+285,y:235})
+  fruit = Bodies.circle(canW/2,height/2,20);
   Matter.Composite.add(rope.body,fruit);
 
   fruit_con = new Link(rope,fruit);
