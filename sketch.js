@@ -83,8 +83,8 @@ function setup()
   botao_cortar3.size(80,80);
   botao_cortar3.mouseClicked(cair3); //função callback
   botao_mudo = createImg("images/mute.png");
-  botao_mudo.position(500,30);
-  botao_mudo.size(80,80);
+  botao_mudo.position(250,30);
+  botao_mudo.size(70,70);
   botao_mudo.mouseClicked(mute); //função callback
 
   soprador = createImg("images/balloon.png")
